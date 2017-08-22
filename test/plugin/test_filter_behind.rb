@@ -1,12 +1,11 @@
-require 'test/unit'
+require 'test_helper'
 require 'fluent/test/driver/filter'
-require 'fluent/plugin/filter_behind'
 require 'pry-byebug'
 
 class BehindFilterTest < Test::Unit::TestCase
   include Fluent
 
-  setup do
+  def setup
     Fluent::Test.setup
   end
 
@@ -14,35 +13,36 @@ class BehindFilterTest < Test::Unit::TestCase
     Test::FilterTestDriver.new(Plugin::BehindFilter).configure(conf)
   end
 
-  sub_test_case 'filter' do
-    def filter(conf, msgs)
-      driver = create_driver(conf)
-      driver.run do
-        msgs.each do |msg|
-          driver.feed(msg, time: Time.now)
-        end
+  def filter(conf, msgs)
+    driver = create_driver(conf)
+    driver.run do
+      msgs.each do |msg|
+        driver.filter(msg, "time" => Time.now)
       end
     end
+    filtered = driver.filtered_as_array
+    filtered
+  end
 
+  sub_test_case 'filter' do
     test 'execute filter' do
       conf_file   = IO.read("#{File.expand_path('../../../example.conf', __FILE__)}")
-      base_time   = Time.now
+      base_time   = Time.now.to_i
       future_time = base_time + 1
       past_time   = base_time - 1
 
-      input = { time: base_time, message: "initial message" }
-      es    = filter(conf_file, [input])
-      binding.pry
-      assert_equal(base_time, es.first['time'])
+      d = create_driver(conf_file)
 
-      input = { time: future_time, message: "initial message" }
-      es    = filter(conf_file, [input])
-      assert_equal(future_time, es.first['time'])
+      d.run do
+        d.emit("time" => base_time, "message" => "initial message")
+        d.emit("time" => future_time, "message" => "future message")
+        d.emit("time" => past_time, "message" => "past message")
+      end
 
-
-      input = { time: past_time, message: "initial message" }
-      es    = filter(conf_file, [input])
-      assert_not_equal(past_time, es.first[1]['time'])
+      assert_equal(
+        [{"time" => base_time, "message" => "initial message"}, {"time" => future_time, "message" => "future message"}].sort_by{|h| h["time"]},
+        d.filtered.instance_variable_get(:@record_array).sort_by{|h| h["time"]}
+      )
     end
   end
 end

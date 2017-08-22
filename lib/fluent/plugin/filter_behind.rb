@@ -1,32 +1,34 @@
-require 'fluent/filter'
+require 'fluent/plugin/filter'
 
 module Fluent
   module Plugin
     class BehindFilter < Filter
       class ConfigError < StandardError ; end
-      Plugin.register_filter('behind', self)
+      Fluent::Plugin.register_filter('behind', self)
+
+      helpers :extract, :storage
+      config_param :time_key, :string, default: nil
+      DEFAULT_STORAGE_TYPE = 'local'
 
       def initialize
         super
-        @last_recorded = nil
       end
 
-      config_section :time_key, param_name: :time_key do
-        desc 'The column key to decide filter or not.'
-        config_param :time_key, :string, default: nil
+      def configure(conf)
+        super
+        @storage = storage_create(usage: 'behind', conf: conf, type: DEFAULT_STORAGE_TYPE)
+        @time_key = conf[:time_key]
       end
 
       def filter(tag, time, record)
         result = nil
-        last_recorded = @last_recorded
-        time_key = conf[:time_key]
+        last_recorded = fetch_timer
         begin
-          if Time.parse(last_recorded).to_i <= Time.parse(record[time_key]).to_i
-            last_recorded = record[time_key]
-            reset_timer(last_recorded)
+          record_time = extract_time_from_record(record).to_i # treats time as unixtime
+          if last_recorded.nil? || last_recorded <= record_time
+            set_timer(record_time)
             result = record
           end
-          reset_timer(last_recorded)
         rescue => e
           log.warn "failed to filter records", error: e
           log.warn_backtrace
@@ -36,8 +38,12 @@ module Fluent
 
       private
 
-      def reset_timer(time)
-        @last_recorded = time
+      def fetch_timer
+        @storage.get(:last_recorded)
+      end
+
+      def set_timer(time)
+        @storage.put(:last_recorded, time)
       end
     end
   end
