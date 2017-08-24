@@ -25,7 +25,36 @@ class BehindFilterTest < Test::Unit::TestCase
   end
 
   sub_test_case 'filter' do
-    test 'execute filter' do
+    test 'execute filter by datetime string' do
+      CONFIG = <<CONF
+        type behind
+        <extract>
+          time_key time
+        time_type string
+        time_format %Y-%m-%d %H:%M:%S %z
+        keep_time_key true
+
+        </extract>
+CONF
+      base_time   = Time.now
+      future_time = base_time + 1
+      past_time   = base_time - 1
+
+      d = create_driver(CONFIG)
+
+      d.run do
+        d.emit("time" => base_time.to_s, "message" => "initial message")
+        d.emit("time" => future_time.to_s, "message" => "future message")
+        d.emit("time" => past_time.to_s, "message" => "past message")
+      end
+
+      assert_equal(
+        [{"time" => base_time.to_s, "message" => "initial message"}, {"time" => future_time.to_s, "message" => "future message"}].sort_by{|h| h["time"]},
+        d.filtered.instance_variable_get(:@record_array).sort_by{|h| h["time"]}
+      )
+    end
+
+    test 'execute filter by unixtime' do
       conf_file   = IO.read("#{File.expand_path('../../../example.conf', __FILE__)}")
       base_time   = Time.now.to_i
       future_time = base_time + 1
