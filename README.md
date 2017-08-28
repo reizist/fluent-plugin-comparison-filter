@@ -1,8 +1,8 @@
 # Fluent::Plugin::FilterBehind
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/fluent/plugin/filter_behind`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![Build Status](https://travis-ci.org/reizist/fluent-plugin-filter_behind.svg?branch=master)](https://travis-ci.org/reizist/fluent-plugin-filter_behind)
 
-TODO: Delete this and the text above, and describe your gem
+A Filter plugin of fluentd for filtering older records than newest one.
 
 ## Installation
 
@@ -22,22 +22,42 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### BehindFilter
 
-## Development
+Add behind filter.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```
+<filter **>
+  @type behind
+  <extract>
+    time_key start_at
+    time_type string
+    time_format %Y-%m-%dT%H:%M:%S %z
+    keep_time_key true
+  </extract>
+</filter>
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+In the case of incoming this records:
+
+```
+{"message": "hogehoge", "start_at":"2017-08-28T03:45:03+00:00"}
+{"message": "fugafuga", "start_at":"2017-08-28T03:45:05+00:00"}
+{"message": "piyopiyo", "start_at":"2017-08-28T03:45:02+00:00"}
+```
+
+Then output becomes as belows:
+
+```
+{"message": "hogehoge", "start_at":"2017-08-28T03:45:03+00:00"}
+{"message": "fugafuga", "start_at":"2017-08-28T03:45:05+00:00"}
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/fluent-plugin-filter_behind. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/reizist/fluent-plugin-filter_behind. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
-## Code of Conduct
-
-Everyone interacting in the Fluent::Plugin::FilterBehind project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/fluent-plugin-filter_behind/blob/master/CODE_OF_CONDUCT.md).

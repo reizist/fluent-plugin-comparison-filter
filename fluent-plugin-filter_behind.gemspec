@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{A fluent filter plugin to filter records which timed in the past.}
   spec.description   = %q{A fluent filter plugin to filter records which timed in the past.}
   spec.homepage      = "https://github.com/reizist/fluent-plugin-filter_behind"
-  spec.license       = "Apache-2.0"
+  spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split("\n")
   spec.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
