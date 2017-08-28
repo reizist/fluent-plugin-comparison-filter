@@ -1,6 +1,5 @@
 require 'test_helper'
 require 'fluent/test/driver/filter'
-require 'pry-byebug'
 
 class BehindFilterTest < Test::Unit::TestCase
   include Fluent
