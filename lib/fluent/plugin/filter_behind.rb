@@ -25,7 +25,7 @@ module Fluent
         last_recorded = fetch_timer
         begin
           record_time = extract_time_from_record(record).to_i # treats time as unixtime
-          if last_recorded.nil? || last_recorded <= record_time
+          if last_recorded.nil? || last_recorded < record_time
             set_timer(record_time)
             result = record
           end
