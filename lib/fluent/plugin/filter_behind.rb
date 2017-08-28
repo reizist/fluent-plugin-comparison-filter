@@ -16,8 +16,7 @@ module Fluent
 
       def configure(conf)
         super
-        @storage = storage_create(usage: 'behind', conf: conf, type: DEFAULT_STORAGE_TYPE)
-        @time_key = conf[:time_key]
+        @storage = storage_create(usage: 'behind', conf: nil, type: DEFAULT_STORAGE_TYPE)
       end
 
       def filter(tag, time, record)
