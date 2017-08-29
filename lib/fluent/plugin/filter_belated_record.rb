@@ -2,9 +2,9 @@ require 'fluent/plugin/filter'
 
 module Fluent
   module Plugin
-    class BehindFilter < Filter
+    class BelatedRecordFilter < Filter
       class ConfigError < StandardError ; end
-      Fluent::Plugin.register_filter('behind', self)
+      Fluent::Plugin.register_filter('belated_record', self)
 
       helpers :extract, :storage
       config_param :time_key, :string, default: nil
@@ -16,7 +16,7 @@ module Fluent
 
       def configure(conf)
         super
-        @storage = storage_create(usage: 'behind', conf: nil, type: DEFAULT_STORAGE_TYPE)
+        @storage = storage_create(usage: 'belated_record', conf: nil, type: DEFAULT_STORAGE_TYPE)
       end
 
       def filter(tag, time, record)

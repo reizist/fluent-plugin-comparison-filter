@@ -1,6 +1,6 @@
 module Fluent
   module Plugin
-    module FilterBehind
+    module FilterBelatedRecord
       VERSION = "0.1.1".freeze
     end
   end

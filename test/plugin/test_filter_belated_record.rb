@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'fluent/test/driver/filter'
 
-class BehindFilterTest < Test::Unit::TestCase
+class BelatedRecordFilterTest < Test::Unit::TestCase
   include Fluent
 
   def setup
@@ -9,7 +9,7 @@ class BehindFilterTest < Test::Unit::TestCase
   end
 
   def create_driver(conf = nil)
-    Test::FilterTestDriver.new(Plugin::BehindFilter).configure(conf)
+    Test::FilterTestDriver.new(Plugin::BelatedRecordFilter).configure(conf)
   end
 
   def filter(conf, msgs)
@@ -26,7 +26,7 @@ class BehindFilterTest < Test::Unit::TestCase
   sub_test_case 'filter' do
     test 'execute filter by datetime string' do
       CONFIG = <<CONF
-        type behind
+        type belated_record
         <extract>
           time_key time
         time_type string

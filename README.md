@@ -1,6 +1,6 @@
-# Fluent::Plugin::FilterBehind
+# Fluent::Plugin::BelatedRecordFilter
 
-[![Build Status](https://travis-ci.org/reizist/fluent-plugin-filter_behind.svg?branch=master)](https://travis-ci.org/reizist/fluent-plugin-filter_behind)
+[![Build Status](https://travis-ci.org/reizist/fluent-plugin-belated-record-filter.svg?branch=master)](https://travis-ci.org/reizist/fluent-plugin-belated-record-filter)
 
 A Filter plugin of fluentd for filtering older records than newest one.
 
@@ -9,7 +9,7 @@ A Filter plugin of fluentd for filtering older records than newest one.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'fluent-plugin-filter_behind'
+gem 'fluent-plugin-belated-record-filter'
 ```
 
 And then execute:
@@ -18,17 +18,17 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install fluent-plugin-filter_behind
+    $ gem install fluent-plugin-belated-record-filter
 
 ## Usage
 
-### BehindFilter
+### BelatedRecordFilter
 
-Add behind filter.
+Add belated_record filter.
 
 ```
 <filter **>
-  @type behind
+  @type belated_record
   <extract>
     time_key start_at
     time_type string
@@ -55,7 +55,7 @@ Then output becomes as belows:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/reizist/fluent-plugin-filter_behind. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/reizist/fluent-plugin-belated-record-filter. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
