@@ -72,5 +72,26 @@ CONF
         d.filtered.instance_variable_get(:@record_array).sort_by{|h| h["time"]}
       )
     end
+
+    test 'execute filter by numeric' do
+      CONFIG = <<CONF
+        type belated_record
+        comparison_key id
+        comparison_key_type numeric
+CONF
+
+      d = create_driver(CONFIG)
+
+      d.run do
+        d.emit("id" => 1, "message" => "initial message")
+        d.emit("id" => 5, "message" => "future message")
+        d.emit("id" => 3, "message" => "past message")
+      end
+
+      assert_equal(
+        [{"id" => 1, "message" => "initial message"}, {"id" => 5, "message" => "future message"}].sort_by{|h| h["id"]},
+        d.filtered.instance_variable_get(:@record_array).sort_by{|h| h["id"]}
+      )
+    end
   end
 end
