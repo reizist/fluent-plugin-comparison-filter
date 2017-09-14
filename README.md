@@ -20,6 +20,19 @@ Or install it yourself as:
 
     $ gem install fluent-plugin-belated-record-filter
 
+## Configuration
+
+### Comparison section
+| name            | type          | required?    | default | description                                       |
+| :-------------  | :------------ | :----------- | :-------| :-----------------------                          |
+| column_key      | string        | yes          | nil     | the column for using comparison
+| column_key_type | enum          | yes          | time    | time or numeric                   
+| time_type       | enum          | no           | float   | type of time type, float or string or unixtime
+| time_format     | string        | no           | nil     | 
+| localtime       | bool          | no           | true    | UTC if :localtime is false and :timezone is nil                     
+| utc             | bool          | no           | false   |
+| timezone        | string        | no           | nli     |
+
 ## Usage
 
 ### BelatedRecordFilter
@@ -29,12 +42,12 @@ Add belated_record filter.
 ```
 <filter **>
   @type belated_record
-  <extract>
-    time_key start_at
+  <comparison>
+    column_key start_at
+    columm_key_type time
     time_type string
     time_format %Y-%m-%dT%H:%M:%S %z
-    keep_time_key true
-  </extract>
+  </comparison>
 </filter>
 ```
 
@@ -51,6 +64,35 @@ Then output becomes as belows:
 ```
 {"message": "hogehoge", "start_at":"2017-08-28T03:45:03+00:00"}
 {"message": "fugafuga", "start_at":"2017-08-28T03:45:05+00:00"}
+```
+
+In the other case like this,
+
+```
+<filter **>
+  @type belated_record
+  <comparison>
+    column_key id 
+    columm_key_type numeric
+  </comparison>
+</filter>
+```
+
+input:
+
+```
+{"message": "hogehoge", "id": 1 }
+{"message": "fugafuga", "id": 5 }
+{"message": "piyopiyo", "id": 3 }
+{"message": "mogemoge", "id": 8 }
+```
+
+output:
+
+```
+{"message": "hogehoge", "id": 1 }
+{"message": "fugafuga", "id": 5 }
+{"message": "mogemoge", "id": 8 }
 ```
 
 ## Contributing
