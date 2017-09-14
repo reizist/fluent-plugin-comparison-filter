@@ -27,13 +27,12 @@ class BelatedRecordFilterTest < Test::Unit::TestCase
     test 'execute filter by datetime string' do
       CONFIG = <<CONF
         type belated_record
-        <extract>
-          time_key time
-        time_type string
-        time_format %Y-%m-%d %H:%M:%S %z
-        keep_time_key true
-
-        </extract>
+        <comparison>
+          column_key time
+          column_key_type time
+          time_type string
+          time_format %Y-%m-%d %H:%M:%S %z
+        </comparison>
 CONF
       base_time   = Time.now
       future_time = base_time + 1
@@ -76,8 +75,10 @@ CONF
     test 'execute filter by numeric' do
       CONFIG = <<CONF
         type belated_record
-        comparison_key id
-        comparison_key_type numeric
+        <comparison>
+          column_key id
+          column_key_type numeric
+        </comparison>
 CONF
 
       d = create_driver(CONFIG)
