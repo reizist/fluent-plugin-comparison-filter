@@ -1,15 +1,15 @@
-# Fluent::Plugin::BelatedRecordFilter
+# Fluent::Plugin::ComparisonFilter
 
-[![Build Status](https://travis-ci.org/reizist/fluent-plugin-belated-record-filter.svg?branch=master)](https://travis-ci.org/reizist/fluent-plugin-belated-record-filter)
+[![Build Status](https://travis-ci.org/reizist/fluent-plugin-comparison-filter.svg?branch=master)](https://travis-ci.org/reizist/fluent-plugin-comparison-filter)
 
-A Filter plugin of fluentd for filtering older records than newest one.
+A Filter plugin of fluentd for filtering by comparing records between newest one and the others.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'fluent-plugin-belated-record-filter'
+gem 'fluent-plugin-comparison-filter'
 ```
 
 And then execute:
@@ -18,7 +18,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install fluent-plugin-belated-record-filter
+    $ gem install fluent-plugin-comparison-filter
 
 ## Configuration
 
@@ -35,13 +35,13 @@ Or install it yourself as:
 
 ## Usage
 
-### BelatedRecordFilter
+### ComparisonFilter
 
-Add belated_record filter.
+Add comparison filter.
 
 ```
 <filter **>
-  @type belated_record
+  @type comparison
   <comparison>
     column_key start_at
     columm_key_type time
@@ -70,7 +70,7 @@ In the other case like this,
 
 ```
 <filter **>
-  @type belated_record
+  @type comparison
   <comparison>
     column_key id 
     columm_key_type numeric
@@ -97,7 +97,7 @@ output:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/reizist/fluent-plugin-belated-record-filter. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/reizist/fluent-plugin-comparison-filter. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 

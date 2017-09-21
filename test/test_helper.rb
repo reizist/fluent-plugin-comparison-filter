@@ -23,7 +23,7 @@ unless ENV.has_key?('VERBOSE')
   $log = nulllogger
 end
 
-require 'fluent/plugin/filter_belated_record'
+require 'fluent/plugin/filter_comparison'
 
 class Test::Unit::TestCase
 end

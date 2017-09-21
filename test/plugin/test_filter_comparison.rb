@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'fluent/test/driver/filter'
 
-class BelatedRecordFilterTest < Test::Unit::TestCase
+class ComparisonFilterTest < Test::Unit::TestCase
   include Fluent
 
   def setup
@@ -9,7 +9,7 @@ class BelatedRecordFilterTest < Test::Unit::TestCase
   end
 
   def create_driver(conf = nil)
-    Test::FilterTestDriver.new(Plugin::BelatedRecordFilter).configure(conf)
+    Test::FilterTestDriver.new(Plugin::ComparisonFilter).configure(conf)
   end
 
   def filter(conf, msgs)
@@ -26,7 +26,7 @@ class BelatedRecordFilterTest < Test::Unit::TestCase
   sub_test_case 'filter' do
     test 'execute filter by datetime string' do
       CONFIG = <<CONF
-        type belated_record
+        type comparison
         <comparison>
           column_key time
           column_key_type time
@@ -74,7 +74,7 @@ CONF
 
     test 'execute filter by numeric' do
       CONFIG = <<CONF
-        type belated_record
+        type comparison 
         <comparison>
           column_key id
           column_key_type numeric

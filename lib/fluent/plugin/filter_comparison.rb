@@ -2,9 +2,9 @@ require 'fluent/plugin/filter'
 
 module Fluent
   module Plugin
-    class BelatedRecordFilter < Filter
+    class ComparisonFilter < Filter
       class ConfigError < StandardError ; end
-      Fluent::Plugin.register_filter('belated_record', self)
+      Fluent::Plugin.register_filter('comparison', self)
       helpers :storage
 
       config_section :comparison, required: true, multi: false, param_name: :comparison_config do
@@ -44,7 +44,7 @@ module Fluent
         else
         end
 
-        @storage = storage_create(usage: 'belated_record', conf: nil, type: DEFAULT_STORAGE_TYPE)
+        @storage = storage_create(usage: 'comparison', conf: nil, type: DEFAULT_STORAGE_TYPE)
       end
 
       def filter(tag, time, record)
