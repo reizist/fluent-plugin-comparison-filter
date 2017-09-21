@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'fluent/plugin/filter_belated_record/version'
+require 'fluent/plugin/filter_comparison/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "fluent-plugin-belated-record-filter"
-  spec.version       = Fluent::Plugin::FilterBelatedRecord::VERSION
+  spec.name          = "fluent-plugin-comparison-filter"
+  spec.version       = Fluent::Plugin::FilterComparison::VERSION
   spec.authors       = ["reizist"]
   spec.email         = ["reizist@gmail.com"]
 
-  spec.summary       = %q{A fluent filter plugin to filter belated records.}
+  spec.summary       = %q{A fluent filter plugin to filter by comparing records.}
   spec.description   = spec.summary
-  spec.homepage      = "https://github.com/reizist/fluent-plugin-belated-record-filter"
+  spec.homepage      = "https://github.com/reizist/fluent-plugin-comparison-filter"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split("\n")
